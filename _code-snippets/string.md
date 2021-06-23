@@ -11,3 +11,16 @@ let guess: u32 = match guess.trim().parse() {
   Err(_) => continue,
 };
 ```
+
+## iteration
+```
+  let bytes = s.as_bytes();
+
+  for (i, &item) in bytes.iter().enumerate() {
+      if item == b' ' {
+   
+      }
+  }
+
+
+```
