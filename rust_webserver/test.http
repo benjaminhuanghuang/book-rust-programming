@@ -1,9 +1,12 @@
 
-###
+### Noraml
 GET http://localhost:7878 HTTP/1.1
 
+### Slow 
+GET http://localhost:7878/sleep HTTP/1.1
 
-###
+
+### 404
 POST http://localhost:7878 HTTP/1.1
 content-type: application/json
 
