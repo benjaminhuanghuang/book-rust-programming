@@ -9,6 +9,10 @@ enum Message {
 }
 
 pub struct ThreadPool {
+  /*
+    thread pool need a storage for the threads.
+    Can not save JoinHandler here directly. Because we need a way to manage and reuse the thread.
+  */
   workers: Vec<Worker>,
   sender: mpsc::Sender<Message>,
 }
@@ -21,6 +25,11 @@ impl ThreadPool {
 
     let (sender, receiver) = mpsc::channel();
 
+    /* 
+      Arc<Mutex<T>> 
+      The Arc type will let multiple workers own the receiver, 
+      and Mutex will ensure that only one worker gets a job from the receiver at a time.
+    */
     let receiver = Arc::new(Mutex::new(receiver));
 
     let mut workers = Vec::with_capacity(size);
@@ -32,7 +41,10 @@ impl ThreadPool {
     ThreadPool { workers, sender }
   }
 
-  // 
+  /*
+    execute() accept a closure as parameter.
+    The type of the closure is FnOnce() + Send + 'static
+  */
   pub fn execute<F>(&self, f: F)
   where
     F: FnOnce() + Send + 'static,
